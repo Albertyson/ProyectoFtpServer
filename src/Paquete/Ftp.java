@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
 public class Ftp {
     /**
      *Atributos de Clase
@@ -146,4 +147,21 @@ public boolean getFichero(String rutaFichero, String rutaLocal){
 
 }
 /*---------------------------------------------------------------------------*/
+/**
+* Método lista los nombres de los archivos y directorios en el directorio actual, comando ls
+* @return String
+* @exception IOException
+*/
+public String ls(){
+      String Lista;
+      try {
+        Lista = ftp.listDirectories().toString() + ftp.listFiles().toString();  
+        return Lista;
+        
+      } catch (IOException e) {
+        System.out.println("IOException ="+e.getMessage());
+        return null;
+      }
+
+}
 }
