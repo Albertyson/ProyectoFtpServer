@@ -111,8 +111,30 @@ public class frmConsola extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+ 
     private void txtPrincipalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrincipalKeyPressed
-        // TODO add your handling code here:
+        System.out.println(evt.getKeyCode());
+        System.out.println(currentDir.isDirectory());
+        if (evt.getKeyCode() == 10 ){
+            System.out.println(command);
+            if(command.substring(0, 2).equals("cd")){
+                
+                
+                currentDir = new File(currentDir.getAbsolutePath().substring(0,currentDir.getAbsolutePath().length()).concat("/"+command.substring(3,command.length()).concat("/")));
+                System.out.println(currentDir.getAbsolutePath());
+                command = "";
+                
+            }
+        } else {
+        if((evt.getKeyCode() >= 65 && evt.getKeyCode() <= 90) || evt.getKeyCode() == 32){
+            command = command.concat(Character.toString(evt.getKeyChar()));  
+        }else if (evt.getKeyCode() == 8){
+            command = command.substring(0,command.length()-1);
+        }
+          }
+            //currentDir = new File("C:/");
+            
+// TODO add your handling code here:
         /*if (evt.getKeyCode() == 38 || evt.getKeyCode() == 40) {
             evt.consume();
         }
@@ -272,7 +294,8 @@ public class frmConsola extends javax.swing.JFrame {
     private File currentDir;//variable para saber el directorio actual
     private String linea = "", txt;
     private FrmLogin frmLogin;
-
+    private Ftp ftpcon;
+       private String command = "";
     /*public void CrearCarpeta() {
         String[] sp = null;//variable para extraer el nombre de la carpeta
         String nom = "";//variable que contendra el nombre de la carpeta
@@ -377,7 +400,7 @@ public class frmConsola extends javax.swing.JFrame {
             txtPrincipal.append("\t" + ex.getMessage());
         }
     }
-
+*
     public void Fecha() {
 
         String di = "", me = "";
