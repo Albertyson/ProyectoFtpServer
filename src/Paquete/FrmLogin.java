@@ -24,7 +24,7 @@ public class FrmLogin extends javax.swing.JFrame {
     public FrmLogin() {
         usersList = new ArrayList();
         archUsers = new File("./Usuarios.bin");
-        ftpServer=new FtpServidor();
+        ftpServer = new FtpServidor();
         cargarUsuarios();
         initComponents();
     }
@@ -158,6 +158,7 @@ public class FrmLogin extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
+        //frmReg = new frmRegister(ftpServer);
         frmReg = new frmRegister();
         frmReg.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
@@ -173,7 +174,7 @@ public class FrmLogin extends javax.swing.JFrame {
                     correctPassword = true;
                     ftpServer.setUsersList(usersList);
                     ftpServer.iniciar();
-                    frmCon = new frmConsola(this,usersList.get(i),ftpServer);
+                    frmCon = new frmConsola(this, usersList.get(i), ftpServer);
                     frmCon.setVisible(true);
                     this.setVisible(false);
                     break;

@@ -25,6 +25,12 @@ public class frmRegister extends javax.swing.JFrame {
     public frmRegister() {
         initComponents();
     }
+    FtpServidor ftpServer;
+
+    public frmRegister(FtpServidor ftpServer) {
+        this.ftpServer = ftpServer;
+        initComponents();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -157,6 +163,19 @@ public class frmRegister extends javax.swing.JFrame {
                     } else {
                         System.out.println("No se pudo crear el directorio");
                     }
+                    /*FtpCliente cliente = new FtpCliente(u, ftpServer);
+                     if (cliente.conectar()) {
+                     Boolean creado = cliente.crearDirectorio(u.getUsername());
+                     if (creado) {
+                     System.out.println("Se creó el directorio");
+                     JOptionPane.showMessageDialog(this.getFrames()[0], "El usuario fue creado con exito");
+                     this.dispose();
+                     } else {
+                     System.out.println("No se pudo crear el directorio");
+                     }
+                     }*/
+
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(this.getFrames()[0], ex.getMessage());

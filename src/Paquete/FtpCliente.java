@@ -52,7 +52,7 @@ public class FtpCliente {
         try {
             // Connect to an FTP server on port 21
             /*client.connect("ftp.proyectoftp.comoj.com", 21);
-            if (client.login("4lbertyson@gmail.com", "Hola123!")) {
+            if (client.login("a5371238", "Hola123!")) {
                 connected=true;
             }*/
             
