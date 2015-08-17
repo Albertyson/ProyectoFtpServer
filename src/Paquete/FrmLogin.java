@@ -24,6 +24,7 @@ public class FrmLogin extends javax.swing.JFrame {
     public FrmLogin() {
         usersList = new ArrayList();
         archUsers = new File("./Usuarios.bin");
+        ftpServer=new FtpServidor();
         cargarUsuarios();
         initComponents();
     }
@@ -170,7 +171,9 @@ public class FrmLogin extends javax.swing.JFrame {
                 found = true;
                 if (txtPassword.getText().equals(usersList.get(i).getPassword())) {
                     correctPassword = true;
-                    frmCon = new frmConsola(this);
+                    ftpServer.setUsersList(usersList);
+                    ftpServer.iniciar();
+                    frmCon = new frmConsola(this,usersList.get(i),ftpServer);
                     frmCon.setVisible(true);
                     this.setVisible(false);
                     break;
@@ -243,6 +246,7 @@ public class FrmLogin extends javax.swing.JFrame {
     frmConsola frmCon;
     File archUsers;
     ArrayList<User> usersList;
+    FtpServidor ftpServer;
 
     public boolean hayUsuarios() {
         boolean hay = false;

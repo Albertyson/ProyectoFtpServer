@@ -24,12 +24,17 @@ public class frmConsola extends javax.swing.JFrame {
     /**
      * Creates new form frmConsola
      */
-    public frmConsola(FrmLogin frmLogin) {
+    public frmConsola(FrmLogin frmLogin, User user,FtpServidor server) {
         this.frmLogin=frmLogin;
-        initComponents();
+        initComponents();        
+        this.setExtendedState(this.MAXIMIZED_BOTH);
+        ftpCliente=new FtpCliente(user,server);
+        ftpCliente.conectar();
+        System.out.println("cambiar directorio: "+ftpCliente.cd(user.getUsername()+"\\"));
+        System.out.println("directorio actual: "+ftpCliente.directorioActual());
+        txtPrincipal.setText(ftpCliente.directorioActual());        
         currentDir = new File("C:/");
         txtPrincipal.setText("C:\\>");
-        this.setExtendedState(this.MAXIMIZED_BOTH);
     }
     public frmConsola() {
         initComponents();
@@ -113,7 +118,7 @@ public class frmConsola extends javax.swing.JFrame {
 
  
     private void txtPrincipalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrincipalKeyPressed
-        System.out.println(evt.getKeyCode());
+        /*System.out.println(evt.getKeyCode());
         System.out.println(currentDir.isDirectory());
         if (evt.getKeyCode() == 10 ){
             System.out.println(command);
@@ -131,11 +136,11 @@ public class frmConsola extends javax.swing.JFrame {
         }else if (evt.getKeyCode() == 8){
             command = command.substring(0,command.length()-1);
         }
-          }
+          }*/
             //currentDir = new File("C:/");
             
 // TODO add your handling code here:
-        /*if (evt.getKeyCode() == 38 || evt.getKeyCode() == 40) {
+        if (evt.getKeyCode() == 38 || evt.getKeyCode() == 40) {
             evt.consume();
         }
         if (evt.getKeyCode() == 37) {
@@ -189,7 +194,7 @@ public class frmConsola extends javax.swing.JFrame {
                     }
                 }//fin del cd..
                 //si utilizó el comando dir
-                else if (linea.startsWith(currentDir.getPath() + ">dir") || linea.startsWith(currentDir.getPath() + ">DIR")) {
+                else if (linea.startsWith(currentDir.getPath() + ">ls") || linea.startsWith(currentDir.getPath() + ">ls")) {
                     try {
                         String[] lista = currentDir.list();
                         txtPrincipal.append("\nArchivos y carpetas de " + currentDir.getPath() + "\\\n");
@@ -199,10 +204,10 @@ public class frmConsola extends javax.swing.JFrame {
                     } catch (Exception ex) {
                     }
                 }//fin del comando dir
-                //si utilizo el comando rm
-                else if (linea.startsWith(currentDir.getPath() + ">rm") || linea.startsWith(currentDir.getPath() + ">RM")) {
+                //si utilizo el comando delete
+                else if (linea.startsWith(currentDir.getPath() + ">delete") || linea.startsWith(currentDir.getPath() + ">DELETE")) {
                     Eliminar();
-                }//fin del comando rm
+                }//fin del comando delete
                 //si utilizó el comando date
                 else if (linea.startsWith(currentDir.getPath() + ">date") || linea.startsWith(currentDir.getPath() + ">DATE")) {
                     Fecha();
@@ -214,7 +219,7 @@ public class frmConsola extends javax.swing.JFrame {
                 else if (linea.startsWith(currentDir.getPath() + ">clear") || linea.startsWith(currentDir.getPath() + ">CLEAR")) {
                     Limpiar();
                 }//fin del comando time
-                else if (linea.startsWith(currentDir.getPath() + ">exit") || linea.startsWith(currentDir.getPath() + ">EXIT")) {
+                else if (linea.startsWith(currentDir.getPath() + ">bye") || linea.startsWith(currentDir.getPath() + ">BYE")) {
                     this.dispose();
                 } else if (linea.startsWith(currentDir.getPath() + ">absolute") || linea.startsWith(currentDir.getPath() + ">ABSOLUTE")) {
                     txtPrincipal.append("\t" + currentDir.getAbsolutePath());
@@ -224,7 +229,7 @@ public class frmConsola extends javax.swing.JFrame {
             } catch (Exception ex) {
             }
             txtPrincipal.append("\n" + currentDir.getPath() + ">");//
-        }*/
+        }
     }//GEN-LAST:event_txtPrincipalKeyPressed
 
     private void txtPrincipalCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtPrincipalCaretPositionChanged
@@ -294,9 +299,9 @@ public class frmConsola extends javax.swing.JFrame {
     private File currentDir;//variable para saber el directorio actual
     private String linea = "", txt;
     private FrmLogin frmLogin;
-    private Ftp ftpcon;
+    private FtpCliente ftpCliente;
        private String command = "";
-    /*public void CrearCarpeta() {
+    public void CrearCarpeta() {
         String[] sp = null;//variable para extraer el nombre de la carpeta
         String nom = "";//variable que contendra el nombre de la carpeta
         try {
@@ -312,8 +317,10 @@ public class frmConsola extends javax.swing.JFrame {
             }
             nom = sp[1];
 
-            File nuevaCarpeta = new File(currentDir.getPath() + "\\" + nom);//variable para crear una nueva carpeta
-            nuevaCarpeta.mkdir();//crear la carpeta
+            //File nuevaCarpeta = new File(".\\" + nom);//variable para crear una nueva carpeta
+            //nuevaCarpeta.mkdir();//crear la carpeta
+            ftpCliente.crearDirectorio(nom);
+            //nuevaCarpeta.mkdir();//crear la carpeta
             txtPrincipal.append("\tSe ha creado la carpeta: " + nom);// para saber si se creó
         } catch (Exception ex) {
             txtPrincipal.append("\t" + ex.getMessage());
@@ -362,13 +369,13 @@ public class frmConsola extends javax.swing.JFrame {
         String nom = "";//variable que contendra el nombre de la carpeta
         try {
             //Dependiendo de si escribió el comando en minuscula o en mayuscula
-            if (linea.startsWith(currentDir.getPath() + ">rm ")) {
-                sp = linea.split(">rm ");//extraer el nombre
+            if (linea.startsWith(currentDir.getPath() + ">DELETE ")) {
+                sp = linea.split(">delete ");//extraer el nombre
             }
-            if (linea.startsWith(currentDir.getPath() + ">RM ")) {
-                sp = linea.split(">RM ");//extraer el nombre
+            if (linea.startsWith(currentDir.getPath() + ">DELETE ")) {
+                sp = linea.split(">DELETE ");//extraer el nombre
             }
-            if (sp[1].contains("rm ") || sp[1].contains("RM ")) {
+            if (sp[1].contains("delete ") || sp[1].contains("DELETE ")) {
                 txtPrincipal.append("No se puede utilizar palabras reservadas como un nombre");
             }
             nom = sp[1];
@@ -400,7 +407,7 @@ public class frmConsola extends javax.swing.JFrame {
             txtPrincipal.append("\t" + ex.getMessage());
         }
     }
-*
+
     public void Fecha() {
 
         String di = "", me = "";
@@ -488,5 +495,5 @@ public class frmConsola extends javax.swing.JFrame {
             }
             ficheros[x].delete();
         }
-    }*/
+    }
 }

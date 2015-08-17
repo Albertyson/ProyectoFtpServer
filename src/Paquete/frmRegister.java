@@ -138,7 +138,7 @@ public class frmRegister extends javax.swing.JFrame {
                             entrada.close();
                             objeto.close();
                         }
-                    }                    
+                    }
                     FileOutputStream salida = new FileOutputStream(archivo);
                     ObjectOutputStream objeto2 = new ObjectOutputStream(salida);
                     objeto2.writeObject(u);
@@ -149,8 +149,14 @@ public class frmRegister extends javax.swing.JFrame {
                     txtUsername.setText("");
                     txtPassword.setText("");
                     txtRePassword.setText("");
-                    JOptionPane.showMessageDialog(this.getFrames()[0], "El usuario fue creado con exito");
-                    this.dispose();
+                    Boolean creado = (new File("/ftp/data/" + u.getUsername())).mkdirs();
+                    if (creado) {
+                        System.out.println("Se creó el directorio");
+                        JOptionPane.showMessageDialog(this.getFrames()[0], "El usuario fue creado con exito");
+                        this.dispose();
+                    } else {
+                        System.out.println("No se pudo crear el directorio");
+                    }
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(this.getFrames()[0], ex.getMessage());

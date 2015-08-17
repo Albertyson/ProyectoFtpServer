@@ -59,3 +59,4 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 /build/
+/dist/
