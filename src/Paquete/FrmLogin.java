@@ -173,10 +173,13 @@ public class FrmLogin extends javax.swing.JFrame {
                 if (txtPassword.getText().equals(usersList.get(i).getPassword())) {
                     correctPassword = true;
                     ftpServer.setUsersList(usersList);
-                    ftpServer.iniciar();
+                    
+                    boolean b = ftpServer.iniciar();
+                    System.out.println(b);
                     frmCon = new frmConsola(this, usersList.get(i), ftpServer);
                     frmCon.setVisible(true);
                     this.setVisible(false);
+                    
                     break;
                 }
             }
