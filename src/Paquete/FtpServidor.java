@@ -71,11 +71,11 @@ public class FtpServidor {
         boolean levantado = false;
         factory = new FtpServerFactory();
         listener = new ListenerFactory();
-        listener.setPort(2221);
+        listener.setPort(20);
         factory.addListener("default", listener.createListener());
-        //PropertiesUserManagerFactory userManagerFactory = new PropertiesUserManagerFactory();
-        //userManagerFactory.setFile(new File("/ftp/data/config.xml"));//choose any. We're telling the FTP-server where to read it's user list
-        /*userManagerFactory.setPasswordEncryptor(new PasswordEncryptor() {//We store clear-text passwords in this example
+        PropertiesUserManagerFactory userManagerFactory = new PropertiesUserManagerFactory();
+        userManagerFactory.setFile(new File("/ftp/data/config.xml"));//choose any. We're telling the FTP-server where to read it's user list
+        userManagerFactory.setPasswordEncryptor(new PasswordEncryptor() {//We store clear-text passwords in this example
             @Override
             public String encrypt(String password) {
                 return password;
@@ -101,7 +101,7 @@ public class FtpServidor {
             } catch (FtpException e1) {
             }
             factory.setUserManager(um);
-        }*/
+        }
         Map<String, Ftplet> m = new HashMap<String, Ftplet>();
         m.put("miaFtplet", new Ftplet() {
             @Override
@@ -136,6 +136,8 @@ public class FtpServidor {
         server = factory.createServer();
         try {
             server.start();
+            System.out.println("server: " + listener.getServerAddress());
+            levantado = true;
         } catch (FtpException ex) {
         }
         return levantado;

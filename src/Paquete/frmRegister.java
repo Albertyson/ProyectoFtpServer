@@ -158,7 +158,7 @@ public class frmRegister extends javax.swing.JFrame {
                     Boolean creado = (new File("/ftp/data/" + u.getUsername())).mkdirs();
                     if (creado) {
                         System.out.println("Se creó el directorio");
-                        JOptionPane.showMessageDialog(this.getFrames()[0], "El usuario fue creado con exito");
+                        JOptionPane.showMessageDialog(this.getFrames()[0], "El usuario fue creado");
                         this.dispose();
                     } else {
                         System.out.println("No se pudo crear el directorio");
